@@ -2,20 +2,10 @@ import Link from "next/link";
 import LogoIcon from "../icons/logo";
 
 export function Brand() {
-  return (
-    <div className="flex gap-4 items-center">
-      <Link href="/">
-        <LogoIcon />
-      </Link>
-      <Link
-        className="text-lg font-bold hover:underline"
-        href="https://github.com/g0ncharuk"
-        passHref
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        by g0ncharuk
-      </Link>
-    </div>
-  );
+    return (
+        <Link href="/" className="group flex gap-2 items-center">
+            <LogoIcon />
+            <p className="text-lg font-bold group-hover:underline">Todo App</p>
+        </Link>
+    );
 }
