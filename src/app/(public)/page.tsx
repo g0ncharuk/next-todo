@@ -10,12 +10,12 @@ export default function Home() {
                         Welcome to Todo
                     </h1>
                     <p className="text-lg text-foreground/60 sm:text-xl md:text-2xl lg:text-3xl">
-                        The ultimate task management tool you&apos;ve never
-                        seen. .
+                        The ultimate task management tool you&apos;ve never seen
+                        before..
                     </p>
 
                     <Button asChild>
-                        <Link href="/login">Get started</Link>
+                        <Link href="/auth/login">Get started</Link>
                     </Button>
                 </div>
             </div>
