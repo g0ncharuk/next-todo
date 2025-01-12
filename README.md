@@ -48,7 +48,6 @@ Configure the following environment variables:
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=todo_db
-POSTGRES_PORT=5432
 
 # Next.js Configuration
 DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
