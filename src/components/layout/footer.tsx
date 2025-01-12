@@ -10,7 +10,7 @@ export function Footer() {
                 <Brand />
 
                 <div>
-                    <p className="text-sm text-center text-foreground/60">
+                    <p className="text-sm text-center text-foreground/60 flex-wrap-reverse">
                         &copy; 2025 Todo App. All rights not reserved.
                     </p>
                 </div>

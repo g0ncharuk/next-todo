@@ -3,20 +3,14 @@
  * These routes do not required authentification
  * @type {string[]}
  */
-export const publicRoutes = ["/", "/auth/verification"];
+export const publicRoutes = ["/"];
 
 /**
  * An array of routes that are used for authentification
  * These routes will redrect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = [
-    "/auth/login",
-    "/auth/registration",
-    "/auth/reset",
-    "/auth/new-password",
-    "/auth/error",
-];
+export const authRoutes = ["/auth/login", "/auth/registration", "/auth/error"];
 
 /**
  * The prefix for API authentification routes

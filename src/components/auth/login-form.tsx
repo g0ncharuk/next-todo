@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
     Form,
     FormControl,
@@ -14,23 +14,28 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
-import { login } from "@/actions/auth/login";
+import { FormSuccess } from "../form-success";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export function LoginForm() {
-    const router = useRouter();
     const searchParams = useSearchParams();
+    const router = useRouter();
+
     const urlError =
         searchParams.get("error") === "OAuthAccountNotLinked"
             ? "Email already in use with different auth method!"
             : "";
 
     const [error, setError] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string | undefined>("");
+    const [isPending, setIsPending] = useState<boolean>(false);
 
-    const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -39,19 +44,29 @@ export function LoginForm() {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-        // startTransition(() => {
-        login(values)
-            .then((data) => {
-                console.log(data);
-                if (data?.error) {
-                    setError(data.error);
-                }
-                form.reset();
-                // router.refresh();
-            })
-            .catch(() => setError("Something went wrong!"));
-        // });
+    const onSubmit = async ({
+        email,
+        password,
+    }: z.infer<typeof LoginSchema>) => {
+        setError("");
+        setSuccess("");
+        setIsPending(true);
+
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+        });
+
+        if (result?.error) {
+            setError(result.error);
+            setIsPending(false);
+        } else {
+            setSuccess("Logged in successfully!");
+            setIsPending(false);
+
+            router.push(DEFAULT_LOGIN_REDIRECT);
+        }
     };
 
     return (
@@ -105,6 +120,7 @@ export function LoginForm() {
                         />
                     </div>
                     <FormError message={error || urlError} />
+                    <FormSuccess message={success} />
                     <Button
                         type="submit"
                         className="w-full"

@@ -20,3 +20,15 @@ export const RegistrationSchema = z.object({
         message: "Name is required",
     }),
 });
+
+export const taskSchema = z.object({
+    id: z.string().optional(),
+    title: z
+        .string()
+        .min(1, "Title is required")
+        .max(100, "Task name must be 100 characters or less"),
+    content: z.string().optional(),
+    priority: z.enum(["LOW", "MEDIUM", "HIGH"]).optional(),
+});
+
+export type TaskFormValues = z.infer<typeof taskSchema>;
