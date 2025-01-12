@@ -1,48 +1,51 @@
 services:
-    # web:
-    #     container_name: web
-    #     build:
-    #         context: .
-    #         dockerfile: Dockerfile
-    #     volumes:
-    #         - .:/app
-    #         - /app/node_modules
-    #         - /app/.next
-    #     ports:
-    #         - "3000:3000"
-    #     depends_on:
-    #         postgres:
-    #             condition: service_healthy
-    #     env_file:
-    #         - .env
+    web:
+        container_name: web
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/app
+            - /app/node_modules
+            - /app/.next
+        ports:
+            - "3000:3000"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        env_file:
+            - .env
 
     postgres:
         container_name: postgresprisma
         image: postgres:13
         ports:
-            - "6969:5432"
+        # Mapping to avoid conflict with local postgres
+            - "5432:5432"
         volumes:
             - postgres:/var/lib/postgresql/data
         env_file:
             - .env
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            test:
+                [
+                    "CMD-SHELL",
+                    "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}",
+                ]
             interval: 5s
             timeout: 5s
             retries: 5
         restart: always
 
-    # pgadmin:
-    #     container_name: pgadmin
-    #     image: dpage/pgadmin4:latest
-    #     depends_on:
-    #         - postgres
-    #     environment:
-    #         PGADMIN_DEFAULT_EMAIL: g0ncharuk.dev@gmail.com
-    #         PGADMIN_DEFAULT_PASSWORD: admin
-    #         PGADMIN_LISTEN_PORT: 80
-    #     ports:
-    #         - "5050:80"
+    pgadmin:
+        container_name: pgadmin
+        image: dpage/pgadmin4:latest
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        ports:
+            - "5050:80"
 
 volumes:
     postgres:

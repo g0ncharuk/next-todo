@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js To-Do Application
+
+A full-stack To-Do application built with Next.js, Prisma, and PostgreSQL. The application features user authentication, task management (create, read, update, delete), and is containerized using Docker for easy local development and deployment.
+
+## Features
+
+- **User Authentication**: Secure sign-up and login functionality
+- **Task Management**:
+  - Create new tasks with title, content, priority, and status
+  - View a list of tasks
+  - Update task status (TODO, DOING, DONE)
+  - Delete existing tasks
+- **Responsive Design**: User-friendly interface optimized for various devices
+- **Dockerized Setup**: Simplifies the development environment setup
+- **Database Integration**: Uses PostgreSQL with Prisma ORM for data management
+- **pgAdmin Integration**: Manage the PostgreSQL database with pgAdmin
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed on your machine:
+
+- Docker (version 20.10.0 or higher)
+- Docker Compose (included with Docker Desktop)
+- Git
+- Node.js (if you plan to run outside Docker)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/g0ncharuk/next-todo.git
+cd next-todo-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the root directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env
+```
 
-## Learn More
+Configure the following environment variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# PostgreSQL Configuration
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=todo_db
+POSTGRES_PORT=5432
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Next.js Configuration
+DATABASE_URL=postgresql://postgres:postgres@postgres:5432/todo_db
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Authentication Providers
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-## Deploy on Vercel
+# pgAdmin Configuration
+PGADMIN_DEFAULT_EMAIL=g0ncharuk.dev@gmail.com
+PGADMIN_DEFAULT_PASSWORD=admin
+PGADMIN_LISTEN_PORT=80
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Build and Run Containers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Start all services
+docker-compose up --build
+
+# Or run in detached mode
+docker-compose up --build -d
+```
+
+### 4. Apply Database Migrations
+
+```bash
+docker-compose exec web npm run db:push
+```
+
+### 5. Access the Application
+
+- Next.js Application: [http://localhost:3000](http://localhost:3000)
+- pgAdmin: [http://localhost:5050](http://localhost:5050)
+
+## Available Scripts
+
+- Development: `docker-compose exec web npm run dev`
+- Build: `docker-compose exec web npm run build`
+- Start: `docker-compose exec web npm run start`
+- Lint: `docker-compose exec web npm run lint`
+
+### Database Scripts
+
+- Push Schema: `docker-compose exec web npm run db:push`
+- Generate Client: `docker-compose exec web npm run db:generate`
+- Run Migrations: `docker-compose exec web npm run db:migrate`
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Database Connection Errors**
+   - Verify DATABASE_URL in .env
+   - Ensure PostgreSQL service is running
+
+2. **Port Conflicts**
+   - Check if ports 3000, 5432, and 5050 are available
+   - Modify host ports in docker-compose.yml if needed
+
+3. **Environment Variables**
+   - Confirm .env file exists and contains all required variables
+   - Restart containers after modifying .env
+
+4. **Authentication Issues**
+   - Verify that all OAuth credentials are correctly configured
+   - Ensure callback URLs are properly set up in GitHub and Google developer consoles
+
+### Viewing Logs
+
+```bash
+docker-compose logs -f
+```
