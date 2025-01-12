@@ -1,12 +1,12 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
-    request: Request,
-    { params }: { params: { taskId: string } }
+    request: NextRequest,
+    context: { params: Promise<{ taskId: string }> }
 ) {
-    const { taskId } = await params;
+    const { taskId } = await context.params;
 
     try {
         const session = await auth();

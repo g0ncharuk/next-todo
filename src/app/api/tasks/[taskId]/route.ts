@@ -1,12 +1,19 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-    request: Request,
-    { params }: { params: { taskId: string } }
+    request: NextRequest,
+    context: { params: Promise<{ taskId: string }> }
 ) {
-    const { taskId } = await params;
+    const { taskId } = await context.params;
+
+    if (!taskId) {
+        return NextResponse.json(
+            { error: "Task ID is required" },
+            { status: 400 }
+        );
+    }
 
     try {
         const session = await auth();
@@ -43,10 +50,17 @@ export async function GET(
 }
 
 export async function DELETE(
-    request: Request,
-    { params }: { params: { taskId: string } }
+    request: NextRequest,
+    context: { params: Promise<{ taskId: string }> }
 ) {
-    const { taskId } = await params;
+    const { taskId } = await context.params;
+
+    if (!taskId) {
+        return NextResponse.json(
+            { error: "Task ID is required" },
+            { status: 400 }
+        );
+    }
 
     try {
         const session = await auth();

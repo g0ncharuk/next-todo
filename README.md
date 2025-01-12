@@ -51,7 +51,7 @@ POSTGRES_DB=todo_db
 POSTGRES_PORT=5432
 
 # Next.js Configuration
-DATABASE_URL=postgresql://postgres:postgres@postgres:5432/todo_db
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
 NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=http://localhost:3000
 
