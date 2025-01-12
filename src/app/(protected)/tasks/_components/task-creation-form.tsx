@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -23,11 +23,13 @@ import {
 import { TaskFormValues, taskSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateTask } from "@/queries/use-tasks";
-import { Priority } from "@prisma/client";
+import { Priority, Task } from "@prisma/client";
 
 export function TaskCreationForm({
+    task,
     shortForm = false,
 }: {
+    task?: Task;
     shortForm?: boolean;
 }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,11 +39,23 @@ export function TaskCreationForm({
     const form = useForm<TaskFormValues>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
+            id: undefined,
             title: "",
             content: "",
             priority: Priority.MEDIUM,
         },
     });
+
+    useEffect(() => {
+        if (task) {
+            form.reset({
+                id: task.id ?? undefined,
+                title: task.title,
+                content: task.content ?? "",
+                priority: task.priority,
+            });
+        }
+    }, [task, form]);
 
     const onSubmit = async (values: TaskFormValues) => {
         setIsSubmitting(true);

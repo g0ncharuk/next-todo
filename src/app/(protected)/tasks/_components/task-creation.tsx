@@ -30,9 +30,9 @@ export function TaskCreation({ task }: { task?: Task }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add Task profile</DialogTitle>
+                    <DialogTitle>{task ? "Edit Task" : "Add Task"}</DialogTitle>
                 </DialogHeader>
-                <TaskCreationForm />
+                <TaskCreationForm task={task} />
             </DialogContent>
         </Dialog>
     );

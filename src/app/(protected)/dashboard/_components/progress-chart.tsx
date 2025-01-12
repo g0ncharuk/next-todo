@@ -1,17 +1,22 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { Label, Pie, PieChart } from "recharts";
+import Link from "next/link";
 
+import { Label, Pie, PieChart } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     ChartConfig,
     ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useTasks } from "@/queries/use-tasks";
 import { Status } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+import { LuMoveUpRight } from "react-icons/lu";
 
 const chartConfig = {
     todo: {
@@ -78,12 +83,21 @@ export function ProgressChart() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Task Progress</CardTitle>
+                <CardTitle className="flex justify-between items-center">
+                    <h1 className="text-xl md:text-2xl font-bold">
+                        Task Progress
+                    </h1>
+                    <Button asChild size={"icon"} variant={"ghost"}>
+                        <Link href={"/tasks"}>
+                            <LuMoveUpRight />
+                        </Link>
+                    </Button>
+                </CardTitle>
             </CardHeader>
             <CardContent className="pb-2">
                 <ChartContainer
                     config={chartConfig}
-                    className="mx-auto aspect-square max-h-[120px]"
+                    className="mx-auto aspect-video max-h-[180px]"
                 >
                     <PieChart>
                         <ChartTooltip
@@ -132,6 +146,10 @@ export function ProgressChart() {
                                 }}
                             />
                         </Pie>
+                        <ChartLegend
+                            content={<ChartLegendContent nameKey="type" />}
+                            className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+                        />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
