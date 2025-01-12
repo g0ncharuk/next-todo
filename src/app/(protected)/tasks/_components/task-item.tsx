@@ -68,35 +68,38 @@ export function TaskItem({ task }: { task: Task }) {
                 "grid grid-cols-[auto_1fr_auto] border justify-between bg-muted/70 rounded-md p-2 gap-2 md:p-4 md:gap-4",
                 task.status === Status.DONE && "bg-muted/30"
             )}
+            data-testid={`task-item-${task.title}`}
         >
-            <div className="flex flex-col item-center">
+            <div className="flex flex-col items-center">
                 <Button
                     className="h-8 w-8 md:h-10 md:w-10"
                     size={"icon"}
                     variant={"outline"}
                     onClick={handleStatusChange}
+                    data-testid={`task-status-button-${task.title}`}
                 >
-                    {task.status === Status.DONE && <LuCheck />}
+                    {task.status === Status.DONE && <LuCheck data-testid={`task-status-icon-${task.title}`} />}
                     {isUpdating ||
                         (task.status === Status.DOING && (
-                            <LuLoader className="animate-spin " />
+                            <LuLoader className="animate-spin" data-testid={`task-loading-icon-${task.title}`} />
                         ))}
                 </Button>
             </div>
             <div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-muted-foreground" data-testid={`task-status-${task.title}`}>
                     Status:
                     {task.status === Status.DONE
-                        ? "Completed"
+                        ? " Completed"
                         : task.status === Status.DOING
-                        ? "In Progress"
-                        : "Todo"}
+                        ? " In Progress"
+                        : " Todo"}
                 </div>
                 <h3
                     className={cn(
                         "text-lg font-semibold",
                         task.status === Status.DONE && "line-through"
                     )}
+                    data-testid={`task-title-${task.title}`}
                 >
                     {task.title}
                 </h3>
@@ -106,6 +109,7 @@ export function TaskItem({ task }: { task: Task }) {
                             "text-sm text-muted-foreground",
                             task.status === Status.DONE && "line-through"
                         )}
+                        data-testid={`task-content-${task.title}`}
                     >
                         {task.content}
                     </p>
@@ -116,6 +120,7 @@ export function TaskItem({ task }: { task: Task }) {
                             "text-sm text-muted-foreground inline-flex items-center mt-2",
                             task.status === Status.DONE && "line-through"
                         )}
+                        data-testid={`task-updated-${task.title}`}
                     >
                         <LuCalendar className="size-4 inline mr-2" />
                         {formatDate(task.updatedAt)}
@@ -129,19 +134,20 @@ export function TaskItem({ task }: { task: Task }) {
                     size={"icon"}
                     variant={"destructive"}
                     onClick={handleDelete}
+                    data-testid={`task-delete-button-${task.title}`}
                 >
                     {isDeleting ? (
-                        <LuLoader className="animate-spin sige-5 " />
+                        <LuLoader className="animate-spin size-5" data-testid={`task-delete-loading-${task.title}`} />
                     ) : (
-                        <LuTrash />
+                        <LuTrash data-testid={`task-delete-icon-${task.title}`} />
                     )}
                 </Button>
-                <Badge>
+                <Badge data-testid={`task-priority-${task.title}`}>
                     {task.priority === Priority.HIGH && (
-                        <LuArrowUp className="size-4" />
+                        <LuArrowUp className="size-4" data-testid={`priority-icon-${task.title}`} />
                     )}
                     {task.priority === Priority.LOW && (
-                        <LuArrowDown className="size-4" />
+                        <LuArrowDown className="size-4" data-testid={`priority-icon-${task.title}`} />
                     )}
                     {task.priority}
                 </Badge>

@@ -79,6 +79,7 @@ export function TaskCreationForm({
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-2 md:space-y-4"
+                data-testid="task-creation-form"
             >
                 <FormField
                     control={form.control}
@@ -87,9 +88,13 @@ export function TaskCreationForm({
                         <FormItem>
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter title" {...field} />
+                                <Input
+                                    placeholder="Enter title"
+                                    {...field}
+                                    data-testid="task-title-input"
+                                />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage data-testid="task-title-error" />
                         </FormItem>
                     )}
                 />
@@ -105,9 +110,10 @@ export function TaskCreationForm({
                                         <Textarea
                                             placeholder="Enter content"
                                             {...field}
+                                            data-testid="task-content-textarea"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="task-content-error" />
                                 </FormItem>
                             )}
                         />
@@ -122,23 +128,32 @@ export function TaskCreationForm({
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger>
+                                            <SelectTrigger data-testid="task-priority-select">
                                                 <SelectValue placeholder="Select priority" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value={Priority.LOW}>
+                                            <SelectItem
+                                                value={Priority.LOW}
+                                                data-testid="priority-low"
+                                            >
                                                 Low
                                             </SelectItem>
-                                            <SelectItem value={Priority.MEDIUM}>
+                                            <SelectItem
+                                                value={Priority.MEDIUM}
+                                                data-testid="priority-medium"
+                                            >
                                                 Medium
                                             </SelectItem>
-                                            <SelectItem value={Priority.HIGH}>
+                                            <SelectItem
+                                                value={Priority.HIGH}
+                                                data-testid="priority-high"
+                                            >
                                                 High
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    <FormMessage />
+                                    <FormMessage data-testid="task-priority-error" />
                                 </FormItem>
                             )}
                         />
@@ -148,6 +163,7 @@ export function TaskCreationForm({
                     type="submit"
                     className="w-full"
                     disabled={isSubmitting}
+                    data-testid="task-submit-button"
                 >
                     {isSubmitting ? "Creating..." : "Create Task"}
                 </Button>

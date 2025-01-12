@@ -8,7 +8,7 @@ export function FormSuccess({ message }: FormSuccessProps) {
     if (!message) return null;
 
     return (
-        <div className="flex items-center gap-x-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-500">
+        <div data-testid="form-success" className="flex items-center gap-x-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-500">
             <FcOk /> {message}
         </div>
     );

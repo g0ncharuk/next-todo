@@ -44,7 +44,14 @@ export function RegisterForm() {
                     form.reset();
                 },
                 (error) => {
-                    setError(error.response.data.message);
+                    setError(
+                        error.response.data.errors
+                            .map(
+                                (e: { field: string; message: string }) =>
+                                    e.message
+                            )
+                            .join(", ")
+                    );
                 }
             );
         });
@@ -54,13 +61,14 @@ export function RegisterForm() {
         <CardWrapper
             headerLabel="Create an account"
             backButtonLabel="Already have an account?"
-            backButtonHref="/authauth/login"
+            backButtonHref="/auth/login"
             showSocial
         >
             <Form {...form}>
                 <form
                     className="space-y-6"
                     onSubmit={form.handleSubmit(onSubmit)}
+                    data-testid="register-form"
                 >
                     <div className="space-y-4">
                         <FormField
@@ -74,9 +82,10 @@ export function RegisterForm() {
                                             {...field}
                                             disabled={isPending}
                                             placeholder="John Doe"
+                                            data-testid="name-input"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="name-input-error" />
                                 </FormItem>
                             )}
                         />
@@ -92,9 +101,10 @@ export function RegisterForm() {
                                             disabled={isPending}
                                             placeholder="john.doe@example.com"
                                             type="email"
+                                            data-testid="email-input"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="email-input-error" />
                                 </FormItem>
                             )}
                         />
@@ -110,19 +120,21 @@ export function RegisterForm() {
                                             disabled={isPending}
                                             placeholder="******"
                                             type="password"
+                                            data-testid="password-input"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="password-input-error" />
                                 </FormItem>
                             )}
                         />
                     </div>
                     <FormSuccess message={success} />
-                    <FormError message={error} />
+                    <FormError message={error}  />
                     <Button
                         type="submit"
                         className="w-full"
                         disabled={isPending}
+                        data-testid="submit-button"
                     >
                         Create an account
                     </Button>

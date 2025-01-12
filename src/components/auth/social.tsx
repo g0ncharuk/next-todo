@@ -13,12 +13,16 @@ export function Social() {
     };
 
     return (
-        <div className="flex w-full items-center gap-x-2">
+        <div
+            className="flex w-full items-center gap-x-2"
+            data-testid="social-buttons"
+        >
             <Button
                 className="w-full"
                 size={"lg"}
                 variant={"outline"}
                 onClick={() => onClick("google")}
+                data-testid="social-google-button"
             >
                 <FcGoogle className="h-5 w-5" />
             </Button>
@@ -27,6 +31,7 @@ export function Social() {
                 size={"lg"}
                 variant={"outline"}
                 onClick={() => onClick("github")}
+                data-testid="social-github-button"
             >
                 <FaGithub className="h-5 w-5" />
             </Button>

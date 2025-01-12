@@ -102,7 +102,48 @@ docker-compose exec web npm run db:push
 
 ## Testing
 
--   Not implemented yet
+### Running the Tests
+
+There are two primary ways to run Cypress tests: using the interactive Test Runner or running them in headless mode.
+
+#### Open Cypress Test Runner (Interactive Mode)
+
+This mode allows you to see the tests run in real-time with a graphical interface.
+
+```bash
+npx cypress open
+```
+
+**Note:** Make sure to add the following script to your `package.json` if you prefer using npm scripts:
+
+```json
+"scripts": {
+  "cypress:open": "cypress open",
+  // ... other scripts
+}
+```
+
+#### Run Tests in Headless Mode
+
+Ideal for continuous integration (CI) environments or when you want to run tests without the GUI.
+
+```bash
+npx cypress run
+```
+
+Or using an npm script:
+
+```bash
+npm run cypress:run
+```
+
+Add the following script to your `package.json` if you prefer using npm scripts:
+
+````json
+"scripts": {
+  "cypress:run": "cypress run",
+  // ... other scripts
+}
 
 ## Troubleshooting
 

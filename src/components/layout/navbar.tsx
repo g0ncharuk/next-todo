@@ -21,12 +21,18 @@ export function Navbar({ session }: { session: Session | null }) {
     const pathname = usePathname();
 
     return (
-        <div className="container mx-auto p-4 flex items-center justify-between gap-4">
+        <div
+            className="container mx-auto p-4 flex items-center justify-between gap-4"
+            data-testid="navbar"
+        >
             <div>
                 <Brand className="text-lg lg:text-3xl" name="Todo App" />
             </div>
             {session?.user && (
-                <nav className="hidden md:flex items-center gap-4 text-sm lg:gap-6">
+                <nav
+                    className="hidden md:flex items-center gap-4 text-sm lg:gap-6"
+                    data-testid="nav-links"
+                >
                     {siteConfig.siteItems.map((item) => (
                         <Link
                             key={item.href}
@@ -37,6 +43,7 @@ export function Navbar({ session }: { session: Session | null }) {
                                     ? "text-foreground"
                                     : "text-foreground/60"
                             )}
+                            data-testid={`nav-link-${item.title.toLowerCase()}`}
                         >
                             {item.title}
                         </Link>
@@ -49,15 +56,26 @@ export function Navbar({ session }: { session: Session | null }) {
                 <AuthButton />
                 {session?.user && (
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger
+                            asChild
+                            data-testid="dropdown-trigger"
+                        >
                             <Button variant="outline" size={"icon"}>
                                 <LuMenu />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
+                        <DropdownMenuContent
+                            className="w-56"
+                            data-testid="dropdown-content"
+                        >
                             {siteConfig.siteItems.map((item) => (
                                 <DropdownMenuItem key={item.href} asChild>
-                                    <Link href={item.href}>{item.title}</Link>
+                                    <Link
+                                        href={item.href}
+                                        data-testid={`dropdown-link-${item.title.toLowerCase()}`}
+                                    >
+                                        {item.title}
+                                    </Link>
                                 </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>

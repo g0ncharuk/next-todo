@@ -19,20 +19,20 @@ export function ConfirmationDialog() {
         <AlertDialog open={isOpen} onOpenChange={closeDialog}>
             <AlertDialogContent className="max-w-[300px] md:max-w-[500px]">
                 <AlertDialogHeader>
-                    <AlertDialogTitle>
+                    <AlertDialogTitle  data-testid="dialog-confirm-title" >
                         {options.title || "Confirm Action"}
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="text-inherit">
+                    <AlertDialogDescription className="text-inherit"  data-testid="dialog-confirm-description">
                         {options.description ||
                             "Are you sure you want to proceed?"}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 
                 <AlertDialogFooter>
-                    <AlertDialogCancel>
+                    <AlertDialogCancel data-testid="dialog-confirm-cancel">
                         {options.cancelLabel || "Cancel"}
                     </AlertDialogCancel>
-                    <AlertDialogAction onClick={confirm}>
+                    <AlertDialogAction onClick={confirm}  data-testid="dialog-confirm-confirm">
                         {options.confirmLabel || "Confirm"}
                     </AlertDialogAction>
                 </AlertDialogFooter>

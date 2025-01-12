@@ -33,15 +33,19 @@ export const AuthButton = () => {
 
     if (mounted && status !== "loading" && status === "unauthenticated") {
         return (
-            <div className="flex gap-4">
+            <div className="flex gap-4" data-testid="auth-buttons">
                 {!isLoginPage && (
-                    <Button asChild>
-                        <Link href="auth/login">Login</Link>
+                    <Button asChild data-testid="login-button">
+                        <Link href="/auth/login">Login</Link>
                     </Button>
                 )}
                 {!isRegisterPage && (
-                    <Button asChild variant={"outline"}>
-                        <Link href="auth/registration">Registration</Link>
+                    <Button
+                        asChild
+                        variant={"outline"}
+                        data-testid="login-button"
+                    >
+                        <Link href="/auth/registration">Registration</Link>
                     </Button>
                 )}
             </div>
@@ -49,20 +53,32 @@ export const AuthButton = () => {
     }
 
     if (status === "loading") {
-        return <div>Loading...</div>;
+        return <div data-testid="auth-loading">Loading...</div>;
     }
 
     return (
-        <div className="flex gap-2 md:gap-4 items-center">
-            <Button variant={"ghost"} className="flex items-center gap-2 h-10 w-10 md:w-auto">
+        <div
+            className="flex gap-2 md:gap-4 items-center"
+            data-testid="user-authenticated"
+        >
+            <Button
+                variant={"ghost"}
+                className="flex items-center gap-2 h-10 w-10 md:w-auto"
+            >
                 <Avatar className="h-6 w-6">
                     <AvatarFallback className="text-xs">
                         {session?.user.name ? session?.user.name[0] : "U"}
                     </AvatarFallback>
                 </Avatar>
-                <span className="hidden md:flex">{session?.user.name}</span>
+                <span className="hidden md:flex" data-testid="user-name">
+                    {session?.user.name}
+                </span>
             </Button>
-            <Button onClick={() => handleLogout()} variant={"outline"}>
+            <Button
+                onClick={() => handleLogout()}
+                variant={"outline"}
+                data-testid="logout-button"
+            >
                 Logout
             </Button>
         </div>

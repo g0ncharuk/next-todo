@@ -10,25 +10,25 @@ export function TaskList() {
     const { data: tasks, isLoading } = useTasks();
 
     return (
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4" data-testid="task-list">
             <Card className="w-full shadow-md">
                 <CardHeader className="p-3 md:p-4 flex flex-row justify-between items-center">
                     <CardTitle>
-                        <h1 className="text-xl md:text-2xl font-bold">Tasks</h1>
+                        <h1 className="text-xl md:text-2xl font-bold" data-testid="tasks-title">Tasks</h1>
                     </CardTitle>
                     <div className="md:hidden">
-                        <TaskCreation />
+                        <TaskCreation data-testid="task-creation-button" />
                     </div>
                 </CardHeader>
                 <CardContent className="p-2 md:p-4">
                     <div className="grid grid-cols-1 gap-2 md:gap-4">
                         {isLoading && (
-                            <div className="text-center text-muted-foreground">
+                            <div className="text-center text-muted-foreground" data-testid="loading-tasks">
                                 Loading tasks...
                             </div>
                         )}
                         {tasks?.length === 0 && (
-                            <div className="text-center text-muted-foreground">
+                            <div className="text-center text-muted-foreground" data-testid="no-tasks-message">
                                 No tasks found
                             </div>
                         )}
@@ -42,12 +42,12 @@ export function TaskList() {
             <Card className="hidden md:block w-1/3 sticky top-24">
                 <CardHeader>
                     <CardTitle>
-                        <h1 className="text-xl md:text-2xl font-bold">
-                            Quick Task
+                        <h1 className="text-xl md:text-2xl font-bold" data-testid="quick-task-title">
+                            Create Task
                         </h1>
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent data-testid="quick-task-form">
                     <TaskCreationForm />
                 </CardContent>
             </Card>

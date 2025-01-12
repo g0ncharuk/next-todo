@@ -59,7 +59,7 @@ export function LoginForm() {
         });
 
         if (result?.error) {
-            setError(result.error);
+            setError("Invalid credentials");
             setIsPending(false);
         } else {
             setSuccess("Logged in successfully!");
@@ -80,6 +80,7 @@ export function LoginForm() {
                 <form
                     className="space-y-6"
                     onSubmit={form.handleSubmit(onSubmit)}
+                    data-testid="login-form"
                 >
                     <div className="space-y-4">
                         <FormField
@@ -94,9 +95,10 @@ export function LoginForm() {
                                             disabled={isPending}
                                             placeholder="john.doe@example.com"
                                             type="email"
+                                            data-testid="email-input"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="email-input-error" />
                                 </FormItem>
                             )}
                         />
@@ -112,19 +114,24 @@ export function LoginForm() {
                                             disabled={isPending}
                                             placeholder="******"
                                             type="password"
+                                            data-testid="password-input"
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage data-testid="password-input-error" />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    <FormError message={error || urlError} />
-                    <FormSuccess message={success} />
+                    <FormError
+                        message={error || urlError}
+                        data-testid="form-error"
+                    />
+                    <FormSuccess message={success} data-testid="form-success" />
                     <Button
                         type="submit"
                         className="w-full"
                         disabled={isPending}
+                        data-testid="submit-button"
                     >
                         Login
                     </Button>
