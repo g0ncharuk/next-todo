@@ -4,25 +4,25 @@ A full-stack To-Do application built with Next.js, Prisma, and PostgreSQL. The a
 
 ## Features
 
-- **User Authentication**: Secure sign-up and login functionality
-- **Task Management**:
-  - Create new tasks with title, content, priority, and status
-  - View a list of tasks
-  - Update task status (TODO, DOING, DONE)
-  - Delete existing tasks
-- **Responsive Design**: User-friendly interface optimized for various devices
-- **Dockerized Setup**: Simplifies the development environment setup
-- **Database Integration**: Uses PostgreSQL with Prisma ORM for data management
-- **pgAdmin Integration**: Manage the PostgreSQL database with pgAdmin
+-   **User Authentication**: Secure sign-up and login functionality
+-   **Task Management**:
+    -   Create new tasks with title, content, priority, and status
+    -   View a list of tasks
+    -   Update task status (TODO, DOING, DONE)
+    -   Delete existing tasks
+-   **Responsive Design**: User-friendly interface optimized for various devices
+-   **Dockerized Setup**: Simplifies the development environment setup
+-   **Database Integration**: Uses PostgreSQL with Prisma ORM for data management
+-   **pgAdmin Integration**: Manage the PostgreSQL database with pgAdmin
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
 
-- Docker (version 20.10.0 or higher)
-- Docker Compose (included with Docker Desktop)
-- Git
-- Node.js (if you plan to run outside Docker)
+-   Docker (version 20.10.0 or higher)
+-   Docker Compose (included with Docker Desktop)
+-   Git
+-   Node.js (if you plan to run outside Docker)
 
 ## Getting Started
 
@@ -84,41 +84,48 @@ docker-compose exec web npm run db:push
 
 ### 5. Access the Application
 
-- Next.js Application: [http://localhost:3000](http://localhost:3000)
-- pgAdmin: [http://localhost:5050](http://localhost:5050)
+-   Next.js Application: [http://localhost:3000](http://localhost:3000)
+-   pgAdmin: [http://localhost:5050](http://localhost:5050)
 
 ## Available Scripts
 
-- Development: `docker-compose exec web npm run dev`
-- Build: `docker-compose exec web npm run build`
-- Start: `docker-compose exec web npm run start`
-- Lint: `docker-compose exec web npm run lint`
+-   Development: `docker-compose exec web npm run dev`
+-   Build: `docker-compose exec web npm run build`
+-   Start: `docker-compose exec web npm run start`
+-   Lint: `docker-compose exec web npm run lint`
 
 ### Database Scripts
 
-- Push Schema: `docker-compose exec web npm run db:push`
-- Generate Client: `docker-compose exec web npm run db:generate`
-- Run Migrations: `docker-compose exec web npm run db:migrate`
+-   Push Schema: `docker-compose exec web npm run db:push`
+-   Generate Client: `docker-compose exec web npm run db:generate`
+-   Run Migrations: `docker-compose exec web npm run db:migrate`
+
+## Testing
+
+-   Not implemented yet
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. **Database Connection Errors**
-   - Verify DATABASE_URL in .env
-   - Ensure PostgreSQL service is running
+
+    - Verify DATABASE_URL in .env
+    - Ensure PostgreSQL service is running
 
 2. **Port Conflicts**
-   - Check if ports 3000, 5432, and 5050 are available
-   - Modify host ports in docker-compose.yml if needed
+
+    - Check if ports 3000, 5432, and 5050 are available
+    - Modify host ports in docker-compose.yml if needed
 
 3. **Environment Variables**
-   - Confirm .env file exists and contains all required variables
-   - Restart containers after modifying .env
+
+    - Confirm .env file exists and contains all required variables
+    - Restart containers after modifying .env
 
 4. **Authentication Issues**
-   - Verify that all OAuth credentials are correctly configured
-   - Ensure callback URLs are properly set up in GitHub and Google developer consoles
+    - Verify that all OAuth credentials are correctly configured
+    - Ensure callback URLs are properly set up in GitHub and Google developer consoles
 
 ### Viewing Logs
 

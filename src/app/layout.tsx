@@ -36,7 +36,7 @@ export default async function RootLayout({
             >
                 <SessionProvider session={session}>
                     <Providers>
-                        <main className="grid min-h-screen grid-rows-[auto_1fr] gap-y-4 ">
+                        <main className="grid min-h-screen grid-rows-[auto_1fr] gap-y-4" data-testid="main-content">
                             <Header />
                             <div className="grow container px-4 md:py-4">
                                 {children}

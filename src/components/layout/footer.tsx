@@ -5,7 +5,7 @@ import { Brand } from "@/components/layout/brand";
 
 export function Footer() {
     return (
-        <footer className="bg-background">
+        <footer data-testid="site-footer" className="bg-background">
             <div className="container mx-auto p-4 flex items-center justify-between gap-4">
                 <Brand />
 
