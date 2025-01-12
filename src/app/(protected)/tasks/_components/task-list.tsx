@@ -1,30 +1,33 @@
 "use client";
 import { useState } from "react";
 
-import { LuCheck, LuLoader, LuTrash } from "react-icons/lu";
+import { LuCalendar, LuCheck, LuLoader, LuTrash } from "react-icons/lu";
 
 import { Task } from "@prisma/client";
 import { useTasks, useDeleteTask, useUpdateStatus } from "@/queries/use-tasks";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { TaskCreation } from "./task-creation";
 import { useConfirmationDialogStore } from "@/stores/confirmation-dialogs.store";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
+import { TaskCreationForm } from "./task-creation-form";
 
 export function TaskList() {
     const { data: tasks, isLoading } = useTasks();
 
     return (
-        <div className="flex flex-col md-f items-start gap-4">
+        <div className="flex items-start gap-4">
             <Card className="w-full shadow-md">
                 <CardHeader className="p-3 md:p-4 flex flex-row justify-between items-center">
-                    <div>
+                    <CardTitle>
                         <h1 className="text-xl md:text-2xl font-bold">Tasks</h1>
+                    </CardTitle>
+                    <div className="md:hidden">
+                        <TaskCreation />
                     </div>
-                    <TaskCreation />
                 </CardHeader>
                 <CardContent className="p-2 md:p-4">
                     <div className="grid grid-cols-1 gap-2 md:gap-4">
@@ -42,6 +45,19 @@ export function TaskList() {
                             <TaskItem key={task.id} task={task} />
                         ))}
                     </div>
+                </CardContent>
+            </Card>
+
+            <Card className="hidden md:block w-1/3 sticky top-24">
+                <CardHeader>
+                    <CardTitle>
+                        <h1 className="text-xl md:text-2xl font-bold">
+                            Quick Task
+                        </h1>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <TaskCreationForm />
                 </CardContent>
             </Card>
         </div>
@@ -64,11 +80,10 @@ export function TaskItem({ task }: { task: Task }) {
                 taskId: task.id,
                 status:
                     task.status === "TODO"
+                        ? "DOING"
+                        : task.status === "DOING"
                         ? "DONE"
-                        : // TODO can use for mark in progress status
-                          // : task.status === "DOING"
-                          // ? "DONE"
-                          "TODO",
+                        : "TODO",
             },
             {
                 onSettled: (task) => {
@@ -116,11 +131,16 @@ export function TaskItem({ task }: { task: Task }) {
                             <LuLoader className="animate-spin " />
                         ))}
                 </Button>
-                <div className="text-xs text-muted-foreground text-center">
-                    {task.status}
-                </div>
             </div>
             <div>
+                <div className="text-xs text-muted-foreground">
+                    Status:{" "}
+                    {task.status === "DONE"
+                        ? "Completed"
+                        : task.status === "DOING"
+                        ? "In Progress"
+                        : "Todo"}
+                </div>
                 <h3
                     className={cn(
                         "text-lg font-semibold",
@@ -137,6 +157,17 @@ export function TaskItem({ task }: { task: Task }) {
                         )}
                     >
                         {task.content}
+                    </p>
+                )}
+                {task.updatedAt && (
+                    <p
+                        className={cn(
+                            "text-sm text-muted-foreground inline-flex items-center mt-2",
+                            task.status === "DONE" && "line-through"
+                        )}
+                    >
+                        <LuCalendar className="size-4 inline mr-2" />
+                        {formatDate(task.updatedAt)}
                     </p>
                 )}
             </div>

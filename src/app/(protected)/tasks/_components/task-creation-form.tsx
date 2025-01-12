@@ -23,6 +23,7 @@ import {
 import { TaskFormValues, taskSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateTask } from "@/queries/use-tasks";
+import { Priority } from "@prisma/client";
 
 export function TaskCreationForm({
     shortForm = false,
@@ -38,7 +39,7 @@ export function TaskCreationForm({
         defaultValues: {
             title: "",
             content: "",
-            priority: undefined,
+            priority: Priority.MEDIUM,
         },
     });
 
@@ -112,13 +113,13 @@ export function TaskCreationForm({
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="LOW">
+                                            <SelectItem value={Priority.LOW}>
                                                 Low
                                             </SelectItem>
-                                            <SelectItem value="MEDIUM">
+                                            <SelectItem value={Priority.MEDIUM}>
                                                 Medium
                                             </SelectItem>
-                                            <SelectItem value="HIGH">
+                                            <SelectItem value={Priority.HIGH}>
                                                 High
                                             </SelectItem>
                                         </SelectContent>

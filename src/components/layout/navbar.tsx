@@ -25,6 +25,24 @@ export function Navbar({ session }: { session: Session | null }) {
             <div>
                 <Brand className="text-lg lg:text-3xl" name="Todo App" />
             </div>
+            {session?.user && (
+                <nav className="hidden md:flex items-center gap-4 text-sm lg:gap-6">
+                    {siteConfig.siteItems.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={cn(
+                                "text-lg transition-colors hover:text-foreground/80 hover:underline",
+                                pathname === item.href
+                                    ? "text-foreground"
+                                    : "text-foreground/60"
+                            )}
+                        >
+                            {item.title}
+                        </Link>
+                    ))}
+                </nav>
+            )}
 
             <div className="flex gap-2 md:gap-4 items-center">
                 <DarkModeToggle />
@@ -36,15 +54,9 @@ export function Navbar({ session }: { session: Session | null }) {
                                 <LuMenu />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56 space-y-1">
+                        <DropdownMenuContent className="w-56">
                             {siteConfig.siteItems.map((item) => (
-                                <DropdownMenuItem
-                                    className={cn(
-                                        pathname === item.href && "bg-muted/70"
-                                    )}
-                                    key={item.href}
-                                    asChild
-                                >
+                                <DropdownMenuItem key={item.href} asChild>
                                     <Link href={item.href}>{item.title}</Link>
                                 </DropdownMenuItem>
                             ))}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { Task } from "@prisma/client";
 
 export async function GET() {
     const session = await auth();
@@ -10,16 +11,25 @@ export async function GET() {
     }
 
     try {
-        const tasks = await prisma.task.findMany({
-            where: {
-                userId: session.user.id,
-            },
-            orderBy: [
-                {
-                    createdAt: "desc",
-                },
-            ],
-        });
+        const tasks = await prisma.$queryRaw<Task[]>`
+        SELECT *
+        FROM "tasks"
+        WHERE "user_id" = ${session.user.id}
+        ORDER BY
+          CASE
+            WHEN status = 'DOING' THEN 1
+            WHEN status = 'TODO' THEN 2
+            WHEN status = 'DONE' THEN 3
+            ELSE 4
+          END,
+          CASE
+            WHEN priority = 'HIGH' THEN 1
+            WHEN priority = 'MEDIUM' THEN 2
+            WHEN priority = 'LOW' THEN 3
+            ELSE 4
+          END,
+          "createdAt" DESC
+      `;
 
         return NextResponse.json(tasks);
     } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useCallback, useMemo } from "react";
 import { Label, Pie, PieChart } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,41 +18,59 @@ const chartConfig = {
         label: "ToDo",
         color: "hsl(var(--chart-1))",
     },
-    done: {
-        label: "Done",
+    doing: {
+        label: "In Progress",
         color: "hsl(var(--chart-2))",
+    },
+    done: {
+        label: "Completed",
+        color: "hsl(var(--chart-3))",
     },
 } satisfies ChartConfig;
 
 export function ProgressChart() {
     const { data: tasks, isLoading, error } = useTasks();
 
-    const todoCount =
-        tasks?.filter((task) => task.status === Status.TODO).length ?? 0;
-    const doneCount =
-        tasks?.filter((task) => task.status === Status.DONE).length ?? 0;
-    const totalCount = tasks?.length ?? 0;
+    const renderFallback = useCallback(() => {
+        if (isLoading) return "Loading...";
+        if (error) return "Error loading tasks";
+        if (!tasks || tasks.length === 0) return "No tasks found";
+        return null;
+    }, [isLoading, error, tasks]);
 
-    const chartData = React.useMemo(
+    const fallbackContent = renderFallback();
+
+    const [todoCount, doneCount, doingCount, totalCount = 0] = useMemo(() => {
+        if (!tasks) {
+            return [0, 0, 0];
+        }
+        let todo = 0;
+        let done = 0;
+        let doing = 0;
+        for (const task of tasks) {
+            if (task.status === Status.TODO) todo++;
+            if (task.status === Status.DOING) doing++;
+            if (task.status === Status.DONE) done++;
+        }
+        return [todo, done, doing, tasks.length];
+    }, [tasks]);
+
+    const chartData = useMemo(
         () => [
-            { type: "todo", count: todoCount, fill: "var(--color-todo)" },
-            { type: "done", count: doneCount, fill: "var(--color-done)" },
+            { type: "todo", count: todoCount, fill: chartConfig.todo.color },
+            { type: "doing", count: doingCount, fill: chartConfig.doing.color },
+            { type: "done", count: doneCount, fill: chartConfig.done.color },
         ],
-        [todoCount, doneCount]
+        [todoCount, doneCount, doingCount]
     );
 
-    if (isLoading) {
+    if (fallbackContent) {
         return (
             <Card className="flex flex-col">
-                <CardContent>Loading...</CardContent>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card className="flex flex-col">
-                <CardContent>Error loading tasks</CardContent>
+                <CardHeader>
+                    <CardTitle>Task Progress</CardTitle>
+                </CardHeader>
+                <CardContent>{fallbackContent}</CardContent>
             </Card>
         );
     }
@@ -110,6 +128,7 @@ export function ProgressChart() {
                                             </text>
                                         );
                                     }
+                                    return null;
                                 }}
                             />
                         </Pie>
